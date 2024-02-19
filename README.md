@@ -22,7 +22,7 @@ Roger
 ### After finishing coding and decided to ask for an update:
     2. git commit (make sure you are NOT IN THE MAIN BRANCH)
 ### Then, in the branch you are editing, create a pull request in GitHub.
-    You can go to pull request #2 (closed) and see the details need to be noted during creating a pull request.
+You can go to pull request #2 (closed) and see the details need to be noted during creating a pull request.
 #### OR, you can do the following command and push to the main branch
     3. git checkout main
     4. git merge <branch-name> (ONLY DO THIS WHEN YOU ARE SURE THERE ARE NO CONFLICTS WITH THE MAIN BRANCH)
