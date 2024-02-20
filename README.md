@@ -1,7 +1,7 @@
 # CSCI3100_GoBang
 A required project dedicated to Michael <3
 
-# For precious groupmates that is contributing to this project:
+# For beloved groupmates that is contributing to this project:
 
 Branch or Clone the repository to your environment first, then do your editing.
 
