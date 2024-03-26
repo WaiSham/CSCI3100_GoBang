@@ -1,0 +1,24 @@
+Client(frontend):
+    - basic requirements
+        - PVP with invitation
+        - PVP with random player
+        - game logic + check gameover
+        - user signup
+        - UI
+    - advanced requirements (priority descending orders)
+        - change sound effects in preference
+        - admin action (CRUD users)
+        - time control
+        - invite/add friends
+        - check forbidde rules
+        - Game AI (rule based)
+
+Server(backend):
+    - basic requirements
+        - 
+        -
+        -
+    - advanced requirements
+        -
+        -   
+        -
