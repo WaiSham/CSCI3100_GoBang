@@ -1,9 +1,18 @@
-import styled from "styled-components";
+//import styled components from react js
+import styled, { createGlobalStyle } from "styled-components";
+
 //style script
 
+export const GlobalStyles = createGlobalStyle`
+  body {
+    background-color: #333333;
+    color: #ffffff;
+  }
+`;
 
+// Title section ------------------------------
 export const Title = styled.h1`
-  color: #333;
+  color: #fff;
   text-align: center;
 `;
 
@@ -11,9 +20,10 @@ export const Title = styled.h1`
 export const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   padding: 20px;
+  flex: 1;
 `;
 
 export const Logo = styled.img`
@@ -39,32 +49,29 @@ export const PasswordInput = styled.input`
 `;
 
 export const LoginButton = styled.button`
-  padding: 10px 20px;
-  background-color: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  margin-bottom: 10px;
 `;
 
 export const SignupButton = styled.button`
-  padding: 10px 20px;
-  background-color: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  margin-bottom: 10px;
 `;
 
 export const GameModeSelection = styled.div`
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const GameModeButton = styled.button`
-  padding: 10px 20px;
-  margin-right: 10px;
-  background-color: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
+  width: 200px;
+  height: 50px;
+  margin-bottom: 10px;
 `;
 
 export const FriendsList = styled.div`
@@ -72,6 +79,15 @@ export const FriendsList = styled.div`
 `;
 
 // Chess board ---------------------
+export const CenterColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  flex: 1;
+`;
+
 export const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
@@ -82,11 +98,13 @@ export const ChessContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 0;
 `;
 
 export const Checkerboard = styled.div`
   display: inline-block;
-  margin-top: 0;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Row = styled.div`
@@ -115,13 +133,14 @@ export const ModalInner = styled.div`
   text-align: center;
 `;
 
-// Right Column ------------------------------- 
+// Right Column -------------------------------
 export const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
+  flex: 1;
 `;
 
 export const Timer = styled.div`

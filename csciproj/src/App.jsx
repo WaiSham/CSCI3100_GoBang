@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 import useBoard from "./useBoard";
 import Chess from "./Chess";
 
-import {Title, LeftColumn, Logo, LoginSection, SignupButton, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton} from "./Style";
+import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignupButton, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton} from "./Style";
 
 export default function App() {
   const { board, wineer, handleChessClick } = useBoard();
@@ -76,6 +76,7 @@ export default function App() {
 
   return (
     <div>
+      <GlobalStyles />        
       <Title>Gobang</Title>
       {/* {wineer && (
         <WinnerModal>
@@ -125,6 +126,8 @@ export default function App() {
         </FriendsList>
       </LeftColumn>
 
+      <CenterColumn>
+        <ChessContainer>
         <Checkerboard>
           {board.map((row, rowIndex) => {
             return (
@@ -144,13 +147,15 @@ export default function App() {
             );
           })}
         </Checkerboard>
+        </ChessContainer>
+      </CenterColumn>
 
       <RightColumn>
       <Timer>
       Time: {timer}
       </Timer>
       <GameInfo>
-      {gameInfo}
+          The game isn't started yet!
       </GameInfo>
       <GameControlButton onClick={handleRetractMove}>
         Retract Move
