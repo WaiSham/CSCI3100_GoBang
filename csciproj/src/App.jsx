@@ -1,13 +1,17 @@
 import React, {useState, useEffect} from "react";
 
+//import internal files
 import useBoard from "./useBoard";
 import Chess from "./Chess";
+import SignupForm from "./SignupForm";
 
-import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignupButton, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton} from "./Style";
+//import styled-components
+import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton} from "./Style";
 
 export default function App() {
   const { board, wineer, handleChessClick } = useBoard();
-  const [selectedMode, setSelectedMode] = useState(null); //for gamemode
+  const [showSignupPage, setShowSignupPage] = useState(true); // State for showing the signup page
+  const [selectedMode, setSelectedMode] = useState(''); //for gamemode
   const [friends, setFriends] = useState([]); //for friendlist
   const [timer, setTimer] = useState(0); //for timer
   const [gameInfo, setGameInfo] = useState("");//for gameinfo display
@@ -24,6 +28,7 @@ export default function App() {
 
   //gamemode selection thingy
   const handleModeSelection = (mode) => {
+    setShowSignupPage(false);
     setSelectedMode(mode);
   };
   // Function to fetch friends data from an API or other data source
@@ -96,18 +101,19 @@ export default function App() {
           <UsernameInput type="text" placeholder="Username" />
           <PasswordInput type="password" placeholder="Password" />
           <LoginButton onClick={handleLogin}>Login</LoginButton>
-          <SignupButton onClick={handleSignup}>Sign Up</SignupButton>
+          {/* have a re-redenered sign up  section so this is not needed */}
+          {/* <SignupButton onClick={handleSignup}>Sign Up</SignupButton> */}
         </LoginSection>
         <GameModeSelection>
           <GameModeButton
             onClick={() => handleModeSelection("PvC")}
-            style={{ backgroundColor: selectedMode === "singlePlayer" ? "green" : "" }}
+            style={{ backgroundColor: selectedMode === "PvC" ? "PvC" : "" }}
           >
             Player vs Computer
           </GameModeButton>
           <GameModeButton
             onClick={() => handleModeSelection("PvP")}
-            style={{ backgroundColor: selectedMode === "multiPlayer" ? "green" : "" }}
+            style={{ backgroundColor: selectedMode === "PvP" ? "PvP" : "" }}
           >
             Player vs Player
           </GameModeButton>
@@ -127,27 +133,54 @@ export default function App() {
       </LeftColumn>
 
       <CenterColumn>
-        <ChessContainer>
-        <Checkerboard>
-          {board.map((row, rowIndex) => {
-            return (
-              <Row key={rowIndex}>
-                {row.map((col, colIndex) => {
-                  return (
-                    <Chess
-                      key={colIndex}
-                      row={rowIndex}
-                      col={colIndex}
-                      value={board[rowIndex][colIndex]}
-                      onClick={handleChessClick}
-                    />
-                  );
-                })}
-              </Row>
-            );
-          })}
-        </Checkerboard>
+      {/* When I choose anything other than default state there is a bug. */}
+      {showSignupPage ? (
+          SignupForm()
+        ) : selectedMode === 'PvP' ? (
+          <ChessContainer>
+          <Checkerboard>
+            {board.map((row, rowIndex) => {
+              return (
+                <Row key={rowIndex}>
+                  {row.map((col, colIndex) => {
+                    return (
+                      <Chess
+                        key={colIndex}
+                        row={rowIndex}
+                        col={colIndex}
+                        value={board[rowIndex][colIndex]}
+                        onClick={handleChessClick}
+                      />
+                    );
+                  })}
+                </Row>
+              );
+            })}
+          </Checkerboard>
         </ChessContainer>
+        ) : selectedMode === 'PvC' ? (
+          <ChessContainer>
+          <Checkerboard>
+            {board.map((row, rowIndex) => {
+              return (
+                <Row key={rowIndex}>
+                  {row.map((col, colIndex) => {
+                    return (
+                      <Chess
+                        key={colIndex}
+                        row={rowIndex}
+                        col={colIndex}
+                        value={board[rowIndex][colIndex]}
+                        onClick={handleChessClick}
+                      />
+                    );
+                  })}
+                </Row>
+              );
+            })}
+          </Checkerboard>
+        </ChessContainer>
+        ) : null}
       </CenterColumn>
 
       <RightColumn>
