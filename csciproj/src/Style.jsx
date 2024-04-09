@@ -55,12 +55,12 @@ export const LoginButton = styled.button`
   margin-bottom: 10px;
 `;
 
-export const SignupButton = styled.button`
-  width: 100%;
-  height: 40px;
-  font-size: 16px;
-  margin-bottom: 10px;
-`;
+// export const SignupButton = styled.button` //have a re-rendered sign up section
+//   width: 100%;
+//   height: 40px;
+//   font-size: 16px;
+//   margin-bottom: 10px;
+// `;
 
 export const GameModeSelection = styled.div`
   display: flex;
@@ -77,8 +77,29 @@ export const GameModeButton = styled.button`
 export const FriendsList = styled.div`
   margin-bottom: 20px;
 `;
+// Center Column (Signup Page) ---------------------
 
-// Chess board ---------------------
+export const SignForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const SignupTitle = styled.h2`
+  margin-bottom: 1rem;
+`;
+
+export const SignupInput = styled.input`
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+export const SignupButton = styled.button`
+  padding: 0.5rem 1rem;
+`;
+
+// Center Column (Chess board) ---------------------
 export const CenterColumn = styled.div`
   display: flex;
   flex-direction: column;
