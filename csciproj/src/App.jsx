@@ -28,6 +28,7 @@ export default function App() {
 
   //gamemode selection thingy
   const handleModeSelection = (mode) => {
+    //there may exist a problem that may cause this error (Rendered fewer hooks than expected. This may be caused by an accidental early return statement.)
     setShowSignupPage(false);
     setSelectedMode(mode);
   };
@@ -107,13 +108,13 @@ export default function App() {
         <GameModeSelection>
           <GameModeButton
             onClick={() => handleModeSelection("PvC")}
-            style={{ backgroundColor: selectedMode === "PvC" ? "PvC" : "" }}
+            style={{ backgroundColor: selectedMode === "PvC" ? "green" : "" }}
           >
             Player vs Computer
           </GameModeButton>
           <GameModeButton
             onClick={() => handleModeSelection("PvP")}
-            style={{ backgroundColor: selectedMode === "PvP" ? "PvP" : "" }}
+            style={{ backgroundColor: selectedMode === "PvP" ? "green" : "" }}
           >
             Player vs Player
           </GameModeButton>
@@ -134,9 +135,12 @@ export default function App() {
 
       <CenterColumn>
       {/* When I choose anything other than default state there is a bug. */}
-      {showSignupPage ? (
-          SignupForm()
-        ) : selectedMode === 'PvP' ? (
+      {
+      //faulty signup rendering logic
+      // showSignupPage ? (
+      //     SignupForm()
+      //   ) : 
+        selectedMode === 'PvP' ? (
           <ChessContainer>
           <Checkerboard>
             {board.map((row, rowIndex) => {
