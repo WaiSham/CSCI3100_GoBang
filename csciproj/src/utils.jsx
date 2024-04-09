@@ -1,17 +1,17 @@
 function countTotal(board, currentY, currentX, directionX, directionY) {
-    // 現在要檢查的棋子是什麼顏色
+    // check the color of the current chess
     const now = board[currentY][currentX];
   
     let tempX = currentX;
     let tempY = currentY;
     let total = 0;
     do {
-      tempX += directionX; // 檢查下一顆棋子
+      tempX += directionX; // check the color of the next chess
       tempY += directionY;
   
-      // 如果新的棋子等於我現在要檢查的（意思就是連續啦）
+      // if the new chess to be checked is the current chess 
       if (board[tempY] && board[tempY][tempX] === now) {
-        // 連續的棋子數 + 1
+        // consecutive +1
         total++;
       } else {
         break;
