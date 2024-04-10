@@ -10,6 +10,28 @@ export const GlobalStyles = createGlobalStyle`
   }
 `;
 
+// Nav Bar -----------------------------------
+export const NavigationContainer = styled.nav`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const NavigationButton = styled.button`
+  /* Add your button styles here */
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+  border: none;
+  border-radius: 5px;
+  color: #333;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #eaeaea;
+  }
+`;
+
 // Title section ------------------------------
 export const Title = styled.h1`
   color: #fff;
