@@ -478,17 +478,49 @@ app.get("/admin/users", isAdmin, (req, res) => {
 
 app.delete("/user/:userID", isAdmin, (req, res) => {
     User.deleteOne({ _id: req.params.userID })
-    .then( () => {
-        res.status(StatusCodes.OK).json({
-            ok: true,
-            msg: "user deleted."
+        .then(() => {
+            res.status(StatusCodes.OK).json({
+                ok: true,
+                msg: "user deleted."
+            })
         })
-    })
-    .catch( (err) => {
+        .catch((err) => {
+            res.status(StatusCodes.BAD_REQUEST).json({
+                ok: false,
+                msg: err
+            });
+        });
+});
+
+app.post("/addfriend/:friendID", isAuthenticated, async (req, res) => {
+    let user = await User.findById(req.session.userID);
+
+    let friend = await User.findById(req.params.friendID);
+    if (!friend) {
+        res.status(StatusCodes.NOT_FOUND).json({
+            ok: false,
+            msg: "User not found."
+        });
+        return;
+    }
+
+    if (user.friends.includes(req.params.friendID)) {
         res.status(StatusCodes.BAD_REQUEST).json({
             ok: false,
-            msg: err
+            msg: "User already in friend list."
         });
+        return;
+    }
+
+    user.friends.push(friend._id);
+    user.save();
+
+    friend.friends.push(user._id);
+    friend.save();
+
+    res.status(StatusCodes.OK).json({
+        ok: true,
+        msg: "Friend added."
     });
 });
 
