@@ -373,7 +373,7 @@ app.ws("/ws", (ws, req) => {
 
                 const x = payload.data.x;
                 const y = payload.data.y;
-                if (!x || !y) {
+                if (x === undefined || y === undefined) {
                     ws.send(JSON.stringify({
                         ok: false,
                         type: "move",
@@ -383,7 +383,7 @@ app.ws("/ws", (ws, req) => {
                 }
 
                 const timeUsed = payload.data.timeUsed;
-                if (!timeUsed) {
+                if (timeUsed === undefined) {
                     ws.send(JSON.stringify({
                         ok: false,
                         type: "move",
@@ -422,7 +422,10 @@ app.ws("/ws", (ws, req) => {
                             return;
                         }
 
-                        if ((game.moves.length % 2 == 1 && game.playerWhite == userID) || (game.moves.length % 2 == 0 && game.playerBlack == userID)) {
+                        const isWhite = game.playerWhite.toString() == userID;
+                        const isBlack = game.playerBlack.toString() == userID;
+
+                        if ((game.moves.length % 2 == 1 && isWhite) || (game.moves.length % 2 == 0 && isBlack)) {
                             GameMoves.create({
                                 x,
                                 y,
@@ -436,10 +439,24 @@ app.ws("/ws", (ws, req) => {
 
                                     ws.send(JSON.stringify({
                                         ok: true,
-                                        type: "move"
+                                        type: "boardNewGo",
+                                        data: {
+                                            x,
+                                            y,
+                                            side: isWhite ? "white" : "black"
+                                        }
                                     }));
 
-
+                                    playerWSMap[isBlack ? game.playerWhite.toString() : game.playerBlack.toString()]
+                                        .send(JSON.stringify({
+                                            ok: true,
+                                            type: "boardNewGo",
+                                            data: {
+                                                x,
+                                                y,
+                                                side: isWhite ? "white" : "black"
+                                            }
+                                        }))
                                 });
                         } else {
                             ws.send(JSON.stringify({
@@ -478,17 +495,49 @@ app.get("/admin/users", isAdmin, (req, res) => {
 
 app.delete("/user/:userID", isAdmin, (req, res) => {
     User.deleteOne({ _id: req.params.userID })
-    .then( () => {
-        res.status(StatusCodes.OK).json({
-            ok: true,
-            msg: "user deleted."
+        .then(() => {
+            res.status(StatusCodes.OK).json({
+                ok: true,
+                msg: "user deleted."
+            })
         })
-    })
-    .catch( (err) => {
+        .catch((err) => {
+            res.status(StatusCodes.BAD_REQUEST).json({
+                ok: false,
+                msg: err
+            });
+        });
+});
+
+app.post("/addfriend/:friendID", isAuthenticated, async (req, res) => {
+    let user = await User.findById(req.session.userID);
+
+    let friend = await User.findById(req.params.friendID);
+    if (!friend) {
+        res.status(StatusCodes.NOT_FOUND).json({
+            ok: false,
+            msg: "User not found."
+        });
+        return;
+    }
+
+    if (user.friends.includes(req.params.friendID)) {
         res.status(StatusCodes.BAD_REQUEST).json({
             ok: false,
-            msg: err
+            msg: "User already in friend list."
         });
+        return;
+    }
+
+    user.friends.push(friend._id);
+    user.save();
+
+    friend.friends.push(user._id);
+    friend.save();
+
+    res.status(StatusCodes.OK).json({
+        ok: true,
+        msg: "Friend added."
     });
 });
 
