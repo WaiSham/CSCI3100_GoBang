@@ -83,10 +83,13 @@ export default function App() {
     // Logic to send a friend request goes here
   };
 
-  // Function to handle game chat (not work)
+  const handleChatBox = () => {
+    //fetchChat();  //to send data out
+  };
+  // //Function to handle game chat (not work)
   // const ChatBox = () => {
-    //something to use here
-  //}
+  //   // something to use here get data every sometimes
+  // }
 
   return (
     <div>
@@ -215,7 +218,11 @@ export default function App() {
       </GameControl>
 
       <ChatBox>
+        <ChatMessages>
           There is no chat yet!
+        </ChatMessages>
+        <ChatInput type="text" placeholder="Type your text here."></ChatInput>
+        <ChatButton onClick={handleChatBox}>Send</ChatButton>
       </ChatBox>
       </RightColumn>
 
