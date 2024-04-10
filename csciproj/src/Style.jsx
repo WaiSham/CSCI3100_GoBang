@@ -27,15 +27,22 @@ export const LeftColumn = styled.div`
 `;
 
 export const Logo = styled.img`
-  width: 100px;
-  height: 100px;
+  // top: 2%;
+  // left: 3.5%;
+  // position: relative; 
+  width: 20vw;
+  height: 25vh;
   margin-bottom: 20px;
 `;
 
 export const LoginSection = styled.div`
+  background-color: #ccffcc;
+  color: black;
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  padding: 20px;
+  width: 20vw;
 `;
 
 export const UsernameInput = styled.input`
@@ -63,9 +70,14 @@ export const LoginButton = styled.button`
 // `;
 
 export const GameModeSelection = styled.div`
+  background-color: #ccffcc;
+  color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  width: 20vw;
 `;
 
 export const GameModeButton = styled.button`
@@ -75,7 +87,12 @@ export const GameModeButton = styled.button`
 `;
 
 export const FriendsList = styled.div`
+  background-color: #ccffcc;
+  color: black;
   margin-bottom: 20px;
+  padding: 20px;
+  width: 20vw;
+  overflow-y: scroll;
 `;
 // Center Column (Signup Page) ---------------------
 
@@ -165,16 +182,39 @@ export const RightColumn = styled.div`
 `;
 
 export const Timer = styled.div`
+  background-color: #ccffcc;
+  color: black;
   margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 20vw;
 `;
 
 export const GameInfo = styled.div`
+  background-color: #ccffcc;
+  color: black;
   margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 20vw;
+`;
+
+export const GameControl = styled.div`
+  background-color: #ccffcc;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  width: 20vw;
 `;
 
 export const GameControlButton = styled.button`
   padding: 10px 20px;
   background-color: #ccc;
+  width: 200px;
+  height: 50px;
   color: black;
   border: none;
   cursor: pointer;
@@ -182,7 +222,9 @@ export const GameControlButton = styled.button`
 `;
 
 export const ChatBox = styled.div`
-  width: 100%;
+  background-color: #ccffcc;
+  color: black;
+  width: 94%;
   height: 200px;
   border: 1px solid #ccc;
   padding: 10px;
