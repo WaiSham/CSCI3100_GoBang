@@ -6,17 +6,22 @@ import useBoard from "./useBoard";
 import Chess from "./Chess";
 import SignupForm from "./SignupForm";
 
+//import internal sound files
+import BGM from "./BGM.mp3"
+
 //import styled-components
 import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner,ModalInnerInner2, ModalText} from "./Style";
 
 export default function App() {
-  const { board, wineer, handleChessClick } = useBoard();
+  const { board, winner, handleChessClick } = useBoard();
   const [showSignupPage, setShowSignupPage] = useState(true);
   const [selectedMode, setSelectedMode] = useState('');
   const [friends, setFriends] = useState([]);
   const [timer, setTimer] = useState(300);//assume 5 minutes match by default
   const [gameInfo, setGameInfo] = useState("");
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isBgmEnabled, setIsBgmEnabled] = useState(false);
+
 
   const handleLogin = () => {
     // Handle login logic here
@@ -45,6 +50,28 @@ export default function App() {
       setFriends(friendsData);
     }, 1000);
   };
+
+  const toggleBgm = () => {
+    setIsBgmEnabled((prevIsBgmEnabled) => !prevIsBgmEnabled);
+  };
+
+  useEffect(() => {
+    const audio = new Audio(BGM); // Replace with the path to your background music file
+
+    if (isBgmEnabled) {
+      audio.loop = true;
+      audio.play();
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, [isBgmEnabled]);
+
 
   useEffect(() => {
     fetchFriends();
@@ -102,15 +129,15 @@ export default function App() {
     <div>
       <GlobalStyles />        
       {/* <Title>Gobang</Title> */}
-      {wineer && (
+      {winner && (
         <WinnerModal>
           <ModalInner>
             <ModalInnerInner2>
-              {wineer === "draw"?(
+              {winner === "draw"?(
                 <ModalText>WE CALL IT A TIE</ModalText>
-              ):wineer === "black"?(
+              ):winner === "black"?(
                 <ModalText>BLACK WINS</ModalText>
-              ):wineer === "white"?(
+              ):winner === "white"?(
                 <ModalText>WHITE WINS</ModalText>
               ):null}
             </ModalInnerInner2>
@@ -230,6 +257,9 @@ export default function App() {
         <GameControlButton onClick={handleFriendRequest}>
           Send Friend Request
         </GameControlButton>
+        <button onClick={toggleBgm}>
+        {isBgmEnabled ? "Disable Music" : "Enable Music"}
+      </button>
       </GameControl>
 
       <ChatBox>
