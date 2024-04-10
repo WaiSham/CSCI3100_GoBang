@@ -30,6 +30,18 @@ function isAuthenticated(req, res, next) {
 	});
 };
 
+function isAdmin(req, res, next) {
+	User.findById(req.session.userID)
+	.then((user) => {
+		console.log(user);
+		if (user.adminRight) next();
+		else res.status(StatusCodes.UNAUTHORIZED).json({
+			ok: false,
+			msg: "No admin rights."
+		})
+	});
+};
+
 app.post("/register", async (req, res) => {
 	const username = req.body.username;
 	if (username === undefined) {
@@ -150,9 +162,24 @@ app.get("/user", async (req, res) => {
 	let query;
 	if (userID !== undefined) query = User.findById(userID);
 	else if (username !== undefined) query = User.findOne({ username });
-	query.populate("games", "friends")
-		// TODO: populate games
-		// .populate("playerBlack", "playerWhite", "moves")
+	query.populate([
+			{
+				path: "games",
+				populate: [ {
+						path: "playerBlack",
+						select: "username"
+					},
+					{
+						path: "playerWhite",
+						select: "username"
+					}
+				]
+			},
+			{
+				path: "friends",
+				select: "username"
+			}
+		])
 		.then(async (user) => {
 			if (user === null) {
 				res.status(StatusCodes.NOT_FOUND).json({
@@ -215,6 +242,18 @@ app.get("/game/:gameID", async (req, res) => {
 				msg: "Unexpected error."
 			})
 		});
+
+app.get("/admin/users", isAdmin, (req, res) => {
+	// get all users info
+		User.find({})
+		.then( (users) => {
+			res.status(StatusCodes.OK).json({
+				ok: true,
+				data: users
+			});
+		});
+	});
+
 });
 
 mongoose.connect("mongodb+srv://stu087:p877630W@cluster0.qsanyuv.mongodb.net/stu087");

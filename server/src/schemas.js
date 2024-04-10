@@ -29,7 +29,8 @@ const userSchema = new mongoose.Schema({
 	theme: { type: String },
 	soundEffect: { type: String },
 	friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-	games: [{ type: mongoose.Schema.Types.ObjectId, ref: "Game" }]
+	games: [{ type: mongoose.Schema.Types.ObjectId, ref: "Game" }],
+	adminRight: {type: Boolean, required: true, default: false}
 });
 const User = mongoose.model('User', userSchema);
 
