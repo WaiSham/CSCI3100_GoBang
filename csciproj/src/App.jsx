@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 
 //import internal files
+import logo from './icon.png';
 import useBoard from "./useBoard";
 import Chess from "./Chess";
 import SignupForm from "./SignupForm";
@@ -114,7 +115,7 @@ export default function App() {
       )}
       <Wrapper>
       <LeftColumn>
-        <Logo src="https://ih1.redbubble.net/image.5313274077.7777/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg" alt="Logo" />
+        <Logo src={logo} alt="Logo" />
         <LoginSection>
           <UsernameInput type="text" placeholder="Username" />
           <PasswordInput type="password" placeholder="Password" />

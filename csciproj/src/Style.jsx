@@ -235,7 +235,7 @@ export const ChatBox = styled.div`
 
 export const ChatMessages = styled.div`
   /* Styles for the chat messages container */
-  height: 25vh;
+  height: 95%;
   text-align: left;
 `;
 
