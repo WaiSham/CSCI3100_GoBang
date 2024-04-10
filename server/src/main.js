@@ -192,7 +192,7 @@ app.get('/user', async (req, res) => {
             }
 
             let resBody;
-            if (req.session.userID === user.id) {
+            if (req.session.userID === user.id || user.adminRight) {
                 resBody = {
                     userID: user.id,
                     username: user.username,
@@ -468,12 +468,27 @@ app.ws("/ws", (ws, req) => {
 app.get("/admin/users", isAdmin, (req, res) => {
     // get all users info
     User.find({})
+        .populate("games", "friends")
         .then((users) => {
             res.status(StatusCodes.OK).json({
                 ok: true,
                 data: users
             });
         });
+});
+
+app.delete("/user/:userID", isAdmin, (req, res) => {
+    User.deleteOne({ id: req.params.userID })
+        .then((err, _) => {
+            if (err) res.status(StatusCodes.NOT_FOUND).json({
+                ok: false,
+                msg: "No such user or other errors"
+            });
+            else res.status(StatusCodes.OK).json({
+                ok: true,
+                msg: "User is deleted"
+            });
+        })
 });
 
 mongoose.connect("mongodb+srv://stu087:p877630W@cluster0.qsanyuv.mongodb.net/stu087");
