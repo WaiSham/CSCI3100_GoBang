@@ -121,7 +121,16 @@ export const FriendsList = styled.div`
   width: 20vw;
   overflow-y: scroll;
 `;
+
 // Center Column (Signup Page) ---------------------
+export const SignupBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0px 0px 0px;
+  flex: 1;
+`;
 
 export const SignForm = styled.form`
   display: flex;

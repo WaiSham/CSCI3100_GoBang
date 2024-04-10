@@ -10,7 +10,7 @@ import SignupForm from "./SignupForm";
 import BGM from "./BGM.mp3"
 
 //import styled-components
-import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner,ModalInnerInner2, ModalText} from "./Style";
+import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner,ModalInnerInner2, ModalText, NavigationContainer, NavigationButton} from "./Style";
 
 export default function App() {
   const { board, winner, handleChessClick } = useBoard();
@@ -147,6 +147,12 @@ export default function App() {
           </ModalInner>
         </WinnerModal>
       )}
+      <NavigationContainer>
+        <NavigationButton>Home</NavigationButton>
+        <NavigationButton>User</NavigationButton>
+        <NavigationButton>Record</NavigationButton>
+        <NavigationButton>Admin</NavigationButton>
+      </NavigationContainer>
       <Wrapper>
       <LeftColumn>
         <Logo src={logo} alt="Logo" />
@@ -184,60 +190,58 @@ export default function App() {
           )}
         </FriendsList>
       </LeftColumn>
-
       <CenterColumn>
       <Title>Gobang</Title>
       {/* When I choose anything other than default state there is a bug. */}
-      {
-      //faulty signup rendering logic
-      // showSignupPage ? (
-      //     SignupForm()
-      //   ) : 
-        selectedMode === 'PvP' ? (
-          <ChessContainer>
+      {/* //faulty signup rendering logic */}
+      {selectedMode === '' && <SignupForm />}
+      {selectedMode === 'PvP' && (
+        <ChessContainer>
           <Checkerboard>
             {board.map((row, rowIndex) => {
-              return (
-                <Row key={rowIndex}>
-                  {row.map((col, colIndex) => {
-                    return (
-                      <Chess
-                        key={colIndex}
-                        row={rowIndex}
-                        col={colIndex}
-                        value={board[rowIndex][colIndex]}
-                        onClick={handleChessClick}
-                      />
-                    );
-                  })}
-                </Row>
-              );
-            })}
+                return (
+                  <Row key={rowIndex}>
+                    {row.map((col, colIndex) => {
+                      return (
+                        <Chess
+                          key={colIndex}
+                          row={rowIndex}
+                          col={colIndex}
+                          value={board[rowIndex][colIndex]}
+                          onClick={handleChessClick}
+                        />
+                      );
+                    })}
+                  </Row>
+                );
+              })}
           </Checkerboard>
         </ChessContainer>
-        ) : selectedMode === 'PvC' ? (
-          <ChessContainer>
+      )}
+      {selectedMode === 'PvC' && (
+        <ChessContainer>
           <Checkerboard>
             {board.map((row, rowIndex) => {
-              return (
-                <Row key={rowIndex}>
-                  {row.map((col, colIndex) => {
-                    return (
-                      <Chess
-                        key={colIndex}
-                        row={rowIndex}
-                        col={colIndex}
-                        value={board[rowIndex][colIndex]}
-                        onClick={handleChessClick}
-                      />
-                    );
-                  })}
-                </Row>
-              );
-            })}
+                return (
+                  <Row key={rowIndex}>
+                    {row.map((col, colIndex) => {
+                      return (
+                        <Chess
+                          key={colIndex}
+                          row={rowIndex}
+                          col={colIndex}
+                          value={board[rowIndex][colIndex]}
+                          onClick={handleChessClick}
+                        />
+                      );
+                    })}
+                  </Row>
+                );
+              })}
           </Checkerboard>
         </ChessContainer>
-        ) : null}
+      )}
+
       </CenterColumn>
 
       <RightColumn>
@@ -271,7 +275,6 @@ export default function App() {
       </ChatBox>
       </RightColumn>
 
-      
       </Wrapper>
     </div>
   );
