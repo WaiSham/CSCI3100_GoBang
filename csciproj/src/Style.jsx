@@ -174,8 +174,8 @@ export const GameInfo = styled.div`
 
 export const GameControlButton = styled.button`
   padding: 10px 20px;
-  background-color: #333;
-  color: white;
+  background-color: #ccc;
+  color: black;
   border: none;
   cursor: pointer;
   margin-bottom: 20px;
