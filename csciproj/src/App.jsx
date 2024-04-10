@@ -7,7 +7,7 @@ import Chess from "./Chess";
 import SignupForm from "./SignupForm";
 
 //import styled-components
-import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton} from "./Style";
+import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner,ModalInnerInner2, ModalText} from "./Style";
 
 export default function App() {
   const { board, wineer, handleChessClick } = useBoard();
@@ -101,15 +101,22 @@ export default function App() {
   return (
     <div>
       <GlobalStyles />        
-      <Title>Gobang</Title>
+      {/* <Title>Gobang</Title> */}
       {wineer && (
         <WinnerModal>
           <ModalInner>
-            {wineer === "draw" && "WE CALL IT A TIE"}
-            {wineer === "black" && "BLACK WINS"}
-            {wineer === "white" && "WHITE WINS"}
-            <br />
-            <button onClick={() => window.location.reload()}>Once More</button>
+            <ModalInnerInner2>
+              {wineer === "draw"?(
+                <ModalText>WE CALL IT A TIE</ModalText>
+              ):wineer === "black"?(
+                <ModalText>BLACK WINS</ModalText>
+              ):wineer === "white"?(
+                <ModalText>WHITE WINS</ModalText>
+              ):null}
+            </ModalInnerInner2>
+            <ModalInnerInner>
+              <ModalButton onClick={() => window.location.reload()}>Once More</ModalButton>
+            </ModalInnerInner>
           </ModalInner>
         </WinnerModal>
       )}
@@ -152,6 +159,7 @@ export default function App() {
       </LeftColumn>
 
       <CenterColumn>
+      <Title>Gobang</Title>
       {/* When I choose anything other than default state there is a bug. */}
       {
       //faulty signup rendering logic
