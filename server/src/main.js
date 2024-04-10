@@ -36,7 +36,6 @@ function isAuthenticated(req, res, next) {
 function isAdmin(req, res, next) {
     User.findById(req.session.userID)
         .then((user) => {
-            console.log(user);
             if (user.adminRight) next();
             else res.status(StatusCodes.UNAUTHORIZED).json({
                 ok: false,
@@ -192,7 +191,7 @@ app.get('/user', async (req, res) => {
             }
 
             let resBody;
-            if (req.session.userID === user.id || user.adminRight) {
+            if (req.session.userID === user.id) {
                 resBody = {
                     userID: user.id,
                     username: user.username,
@@ -478,17 +477,19 @@ app.get("/admin/users", isAdmin, (req, res) => {
 });
 
 app.delete("/user/:userID", isAdmin, (req, res) => {
-    User.deleteOne({ id: req.params.userID })
-        .then((err, _) => {
-            if (err) res.status(StatusCodes.NOT_FOUND).json({
-                ok: false,
-                msg: "No such user or other errors"
-            });
-            else res.status(StatusCodes.OK).json({
-                ok: true,
-                msg: "User is deleted"
-            });
+    User.deleteOne({ _id: req.params.userID })
+    .then( () => {
+        res.status(StatusCodes.OK).json({
+            ok: true,
+            msg: "user deleted."
         })
+    })
+    .catch( (err) => {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            ok: false,
+            msg: err
+        });
+    });
 });
 
 mongoose.connect("mongodb+srv://stu087:p877630W@cluster0.qsanyuv.mongodb.net/stu087");
