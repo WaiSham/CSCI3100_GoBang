@@ -22,7 +22,7 @@ export const LeftColumn = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding-left: 20px;
   flex: 1;
 `;
 
@@ -89,7 +89,7 @@ export const GameModeButton = styled.button`
 export const FriendsList = styled.div`
   background-color: #ccffcc;
   color: black;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   padding: 20px;
   width: 20vw;
   overflow-y: scroll;
@@ -122,7 +122,7 @@ export const CenterColumn = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 20px 0px 0px 0px;
   flex: 1;
 `;
 
@@ -177,7 +177,7 @@ export const RightColumn = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 20px 20px 0px 0px;
   flex: 1;
 `;
 
@@ -235,7 +235,7 @@ export const ChatBox = styled.div`
 
 export const ChatMessages = styled.div`
   /* Styles for the chat messages container */
-  height: 25vh;
+  height: 95%;
   text-align: left;
 `;
 

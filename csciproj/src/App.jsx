@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 
 //import internal files
+import logo from './icon.png';
 import useBoard from "./useBoard";
 import Chess from "./Chess";
 import SignupForm from "./SignupForm";
@@ -19,10 +20,12 @@ export default function App() {
 
   const handleLogin = () => {
     // Handle login logic here
+    alert("no five write yet")
   };
 
   const handleSignup = () => {
     // Handle sign up logic here
+    alert("no six write yet")
   };
 
   const handleModeSelection = (mode) => {
@@ -71,20 +74,24 @@ export default function App() {
   // Function to handle retracting a move
   const handleRetractMove = () => {
     // Logic to retract a move goes here
+    alert("no one write yet!!!")
   };
 
   // Function to handle surrendering the game
   const handleSurrender = () => {
     // Logic to surrender the game goes here
+    alert("no two write yet!!!")
   };
 
   // Function to handle sending a friend request
   const handleFriendRequest = () => {
     // Logic to send a friend request goes here
+    alert("no three write yet!!!")
   };
 
   const handleChatBox = () => {
     //fetchChat();  //to send data out
+    alert("no four write yet!!!")
   };
   // //Function to handle game chat (not work)
   // const ChatBox = () => {
@@ -94,21 +101,21 @@ export default function App() {
   return (
     <div>
       <GlobalStyles />        
-      {/* <Title>Gobang</Title> */}
-      {/* {wineer && (
+      <Title>Gobang</Title>
+      {wineer && (
         <WinnerModal>
           <ModalInner>
-            {wineer === "draw" && "平手"}
-            {wineer === "black" && "獲勝的是黑子"}
-            {wineer === "white" && "獲勝的是白子"}
+            {wineer === "draw" && "WE CALL IT A TIE"}
+            {wineer === "black" && "BLACK WINS"}
+            {wineer === "white" && "WHITE WINS"}
             <br />
-            <button onClick={() => window.location.reload()}>再玩一次</button>
+            <button onClick={() => window.location.reload()}>Once More</button>
           </ModalInner>
         </WinnerModal>
-      )} */}
+      )}
       <Wrapper>
       <LeftColumn>
-        <Logo src="https://ih1.redbubble.net/image.5313274077.7777/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg" alt="Logo" />
+        <Logo src={logo} alt="Logo" />
         <LoginSection>
           <UsernameInput type="text" placeholder="Username" />
           <PasswordInput type="password" placeholder="Password" />
