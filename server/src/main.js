@@ -422,7 +422,10 @@ app.ws("/ws", (ws, req) => {
                             return;
                         }
 
-                        if ((game.moves.length % 2 == 1 && game.playerWhite == userID) || (game.moves.length % 2 == 0 && game.playerBlack == userID)) {
+                        const isWhite = game.playerWhite.toString() == userID;
+                        const isBlack = game.playerBlack.toString() == userID;
+
+                        if ((game.moves.length % 2 == 1 && isWhite) || (game.moves.length % 2 == 0 && isBlack)) {
                             GameMoves.create({
                                 x,
                                 y,
@@ -436,10 +439,24 @@ app.ws("/ws", (ws, req) => {
 
                                     ws.send(JSON.stringify({
                                         ok: true,
-                                        type: "move"
+                                        type: "boardNewGo",
+                                        data: {
+                                            x,
+                                            y,
+                                            side: isWhite ? "white" : "black"
+                                        }
                                     }));
 
-
+                                    playerWSMap[isBlack ? game.playerWhite.toString() : game.playerBlack.toString()]
+                                        .send(JSON.stringify({
+                                            ok: true,
+                                            type: "boardNewGo",
+                                            data: {
+                                                x,
+                                                y,
+                                                side: isWhite ? "white" : "black"
+                                            }
+                                        }))
                                 });
                         } else {
                             ws.send(JSON.stringify({
