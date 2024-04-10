@@ -373,7 +373,7 @@ app.ws("/ws", (ws, req) => {
 
                 const x = payload.data.x;
                 const y = payload.data.y;
-                if (!x || !y) {
+                if (x === undefined || y === undefined) {
                     ws.send(JSON.stringify({
                         ok: false,
                         type: "move",
@@ -383,7 +383,7 @@ app.ws("/ws", (ws, req) => {
                 }
 
                 const timeUsed = payload.data.timeUsed;
-                if (!timeUsed) {
+                if (timeUsed === undefined) {
                     ws.send(JSON.stringify({
                         ok: false,
                         type: "move",
