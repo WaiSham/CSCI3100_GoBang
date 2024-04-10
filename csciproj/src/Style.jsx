@@ -14,6 +14,10 @@ export const GlobalStyles = createGlobalStyle`
 export const Title = styled.h1`
   color: #fff;
   text-align: center;
+  Background-color: #cccccc;
+  padding: 20px;
+  border-radius: 30px;
+  border: solid #fff 2px;
 `;
 
 // Left Column --------------------------------
@@ -258,7 +262,7 @@ export const GameControlButton = styled.button`
   width: 200px;
   height: 50px;
   color: black;
-  border: none;
+  border: solid #000 1px;
   cursor: pointer;
   margin-bottom: 20px;
 `;

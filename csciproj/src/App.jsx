@@ -10,7 +10,7 @@ import SignupForm from "./SignupForm";
 import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner,ModalInnerInner2, ModalText} from "./Style";
 
 export default function App() {
-  const { board, wineer, handleChessClick } = useBoard();
+  const { board, winner, handleChessClick } = useBoard();
   const [showSignupPage, setShowSignupPage] = useState(true);
   const [selectedMode, setSelectedMode] = useState('');
   const [friends, setFriends] = useState([]);
@@ -102,15 +102,15 @@ export default function App() {
     <div>
       <GlobalStyles />        
       {/* <Title>Gobang</Title> */}
-      {wineer && (
+      {winner && (
         <WinnerModal>
           <ModalInner>
             <ModalInnerInner2>
-              {wineer === "draw"?(
+              {winner === "draw"?(
                 <ModalText>WE CALL IT A TIE</ModalText>
-              ):wineer === "black"?(
+              ):winner === "black"?(
                 <ModalText>BLACK WINS</ModalText>
-              ):wineer === "white"?(
+              ):winner === "white"?(
                 <ModalText>WHITE WINS</ModalText>
               ):null}
             </ModalInnerInner2>
