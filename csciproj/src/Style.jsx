@@ -5,7 +5,7 @@ import styled, { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
   body {
-    background-color: #333333;
+    background-color: #121a25;
     color: #ffffff;
   }
 `;
@@ -18,11 +18,12 @@ export const Title = styled.h1`
 
 // Left Column --------------------------------
 export const LeftColumn = styled.div`
+  background-color: #0a1425;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-left: 20px;
+  //padding-left: 20px;
   flex: 1;
 `;
 
@@ -149,13 +150,14 @@ export const Row = styled.div`
   display: flex;
 `;
 
+//For the pop up banner and such
 export const WinnerModal = styled.div`
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: RGBA(0,0,0,0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,12 +165,52 @@ export const WinnerModal = styled.div`
 `;
 
 export const ModalInner = styled.div`
-  background: white;
+  background: #ccffcc;
+  border-radius: 2%;
   color: black;
   height: 300px;
   width: 300px;
   padding: 24px;
   text-align: center;
+`;
+
+export const ModalText =styled.div`
+  padding: 50px 0px 50px 0px;
+  border-radius: 10%;
+  border: solid #000 1px;
+  background: #eee;
+  color: Black;
+  width: 300px;
+  text-align: center;
+  color: black;
+`;
+
+//to contain button
+export const ModalInnerInner =styled.div`
+  width: 19vw;
+`;
+
+//to contain text
+export const ModalInnerInner2 =styled.div`
+  height: 50%;
+  width: 300px;
+  text-align: center;
+  color: black;
+`;
+
+export const ModalButton = styled.button`
+  /* Styles for the chat send button */
+  // flex-direction: column;
+
+  text-align: center;
+  border-radius: 10%;
+  background-color: #ccc;
+  width: 150px;
+  height: 70px;
+  color: black;
+  border: solid #000 1px;
+  cursor: pointer;
+  margin-bottom: 20px;
 `;
 
 // Right Column -------------------------------
