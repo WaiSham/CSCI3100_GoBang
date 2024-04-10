@@ -6,35 +6,32 @@ import Chess from "./Chess";
 import SignupForm from "./SignupForm";
 
 //import styled-components
-import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton} from "./Style";
+import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton} from "./Style";
 
 export default function App() {
   const { board, wineer, handleChessClick } = useBoard();
-  const [showSignupPage, setShowSignupPage] = useState(true); // State for showing the signup page
-  const [selectedMode, setSelectedMode] = useState(''); //for gamemode
-  const [friends, setFriends] = useState([]); //for friendlist
-  const [timer, setTimer] = useState(0); //for timer
-  const [gameInfo, setGameInfo] = useState("");//for gameinfo display
+  const [showSignupPage, setShowSignupPage] = useState(true);
+  const [selectedMode, setSelectedMode] = useState('');
+  const [friends, setFriends] = useState([]);
+  const [timer, setTimer] = useState(300);//assume 5 minutes match by default
+  const [gameInfo, setGameInfo] = useState("");
+  const [isGameStarted, setIsGameStarted] = useState(false);
 
-  // login handling thingy
   const handleLogin = () => {
     // Handle login logic here
   };
 
-    // sign up handling thingy
-    const handleSignup = () => {
-      // Handle sign up logic here
-    };
+  const handleSignup = () => {
+    // Handle sign up logic here
+  };
 
-  //gamemode selection thingy
   const handleModeSelection = (mode) => {
-    //there may exist a problem that may cause this error (Rendered fewer hooks than expected. This may be caused by an accidental early return statement.)
     setShowSignupPage(false);
     setSelectedMode(mode);
+    setIsGameStarted(true); // Start the game
   };
-  // Function to fetch friends data from an API or other data source
+
   const fetchFriends = () => {
-    // Simulating an asynchronous API call
     setTimeout(() => {
       const friendsData = [
         { id: 1, name: "John" },
@@ -50,14 +47,25 @@ export default function App() {
     fetchFriends();
   }, []);
 
-  // for timer
-  useEffect(() => {
+  // for time (Downcounting)
+  useEffect(() => { 
     const interval = setInterval(() => {
-      setTimer((prevTimer) => prevTimer + 1);
+      if (isGameStarted) {
+        setTimer((prevTimer) => prevTimer - 1);
+      }
     }, 1000);
   
-    return () => clearInterval(interval); // Clean up the interval when the component unmounts
-  }, []);
+    return () => clearInterval(interval);
+  }, [isGameStarted]);
+
+  // // for timer (Upcounting)
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setTimer((prevTimer) => prevTimer + 1);
+  //   }, 1000);
+  
+  //   return () => clearInterval(interval); // Clean up the interval when the component unmounts
+  // }, []);
 
   //for game control button
   // Function to handle retracting a move
@@ -83,7 +91,7 @@ export default function App() {
   return (
     <div>
       <GlobalStyles />        
-      <Title>Gobang</Title>
+      {/* <Title>Gobang</Title> */}
       {/* {wineer && (
         <WinnerModal>
           <ModalInner>
@@ -97,7 +105,7 @@ export default function App() {
       )} */}
       <Wrapper>
       <LeftColumn>
-        <Logo src="/path/to/logo.png" alt="Logo" />
+        <Logo src="https://ih1.redbubble.net/image.5313274077.7777/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg" alt="Logo" />
         <LoginSection>
           <UsernameInput type="text" placeholder="Username" />
           <PasswordInput type="password" placeholder="Password" />
@@ -194,15 +202,18 @@ export default function App() {
       <GameInfo>
           The game isn't started yet!
       </GameInfo>
-      <GameControlButton onClick={handleRetractMove}>
-        Retract Move
-      </GameControlButton>
-      <GameControlButton onClick={handleSurrender}>
-        Surrender
-      </GameControlButton>
-      <GameControlButton onClick={handleFriendRequest}>
-        Send Friend Request
-      </GameControlButton>
+      <GameControl>
+        <GameControlButton onClick={handleRetractMove}>
+          Retract Move
+        </GameControlButton>
+        <GameControlButton onClick={handleSurrender}>
+          Surrender
+        </GameControlButton>
+        <GameControlButton onClick={handleFriendRequest}>
+          Send Friend Request
+        </GameControlButton>
+      </GameControl>
+
       <ChatBox>
           There is no chat yet!
       </ChatBox>
@@ -213,3 +224,5 @@ export default function App() {
     </div>
   );
 }
+
+//----------------------------------------------------------
