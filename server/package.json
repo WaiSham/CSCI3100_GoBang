@@ -1,15 +1,21 @@
 {
-  "dependencies": {
-    "mongoose": "^8.2.3"
-  },
+  "name": "gobang-api",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "test": "node src/main.js"
   },
-  "name": "server",
-  "version": "1.0.0",
-  "main": "server.js",
-  "devDependencies": {},
   "author": "",
-  "license": "ISC",
-  "description": ""
+  "license": "UNLICENSED",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "express-ws": "^5.0.2",
+    "http-status-codes": "^2.3.0",
+    "mongoose": "^8.3.1"
+  }
 }
