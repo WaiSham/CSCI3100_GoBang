@@ -224,21 +224,31 @@ export const GameControlButton = styled.button`
 export const ChatBox = styled.div`
   background-color: #ccffcc;
   color: black;
-  width: 94%;
+  width: 20vw;
   height: 200px;
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 20px;
   overflow-y: scroll;
+  // display: flex;
+  flex-direction: column;
 `;
 
 export const ChatMessages = styled.div`
   /* Styles for the chat messages container */
+  height: 25vh;
+  text-align: left;
 `;
 
 export const ChatInput = styled.input`
   /* Styles for the chat input box */
+  width: 200px;
+  
+  // horizontal-align: center;
+  align-self: flex-end;
 `;
 
 export const ChatButton = styled.button`
   /* Styles for the chat send button */
+  // flex-direction: column;
+  align-self: flex-end;
 `;
