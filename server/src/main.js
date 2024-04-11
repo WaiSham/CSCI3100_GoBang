@@ -6,6 +6,7 @@ import cors from "cors";
 import { Game, GameMoves, User } from "./schemas.js";
 import { StatusCodes } from "http-status-codes";
 import ExpressWs from "express-ws";
+import WebSocket from "ws";
 
 const app = express();
 ExpressWs(app);
@@ -272,12 +273,16 @@ app.ws("/ws", (ws, req) => {
             userID = payload.data.userID;
 
             if (playerWSMap[userID]) {
+                if (playerWSMap[userID].readyState === WebSocket.CLOSED) {
+                    playerWSMap.delete(userID);
+                } else {
                 ws.send(JSON.stringify({
                     ok: false,
                     type: "auth",
                     reason: "tooManySessions"
                 }));
                 return;
+                }
             }
 
             playerWSMap[userID] = ws;
