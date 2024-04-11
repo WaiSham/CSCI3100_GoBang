@@ -327,11 +327,11 @@ app.ws("/ws", (ws, req) => {
                         type: "MM",
                         reason: "alreadyInGame",
                         data: {
-                            opponent: currentGameOfUser.playerBlack === userID
+                            opponent: currentGameOfUser.playerBlack.toString() === userID
                                 ? currentGameOfUser.playerWhite.toString()
                                 : currentGameOfUser.playerBlack.toString(),
                             gameID: currentGameOfUser.id,
-                            side: currentGameOfUser.playerBlack === userID ? "black" : "white",
+                            side: currentGameOfUser.playerBlack.toString() === userID ? "black" : "white",
                             board: currentGameOfUser.finalBoard
                         }
                     }))
@@ -432,8 +432,8 @@ app.ws("/ws", (ws, req) => {
                             return;
                         }
 
-                        const isWhite = game.playerWhite.toString() == userID;
-                        const isBlack = game.playerBlack.toString() == userID;
+                        const isWhite = game.playerWhite.toString() === userID;
+                        const isBlack = game.playerBlack.toString() === userID;
 
                         if ((game.moves.length % 2 == 1 && isWhite) || (game.moves.length % 2 == 0 && isBlack)) {
                             GameMoves.create({
