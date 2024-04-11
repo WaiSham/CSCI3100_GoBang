@@ -331,7 +331,8 @@ app.ws("/ws", (ws, req) => {
                                 ? currentGameOfUser.playerWhite.toString()
                                 : currentGameOfUser.playerBlack.toString(),
                             gameID: currentGameOfUser.id,
-                            side: currentGameOfUser.playerBlack === userID ? "black" : "white"
+                            side: currentGameOfUser.playerBlack === userID ? "black" : "white",
+                            board: currentGameOfUser.finalBoard
                         }
                     }))
                     return;
@@ -360,7 +361,8 @@ app.ws("/ws", (ws, req) => {
                     data: {
                         opponent: lastMMPlayer,
                         gameID: game.id,
-                        side: isSelfWhite ? "white" : "black"
+                        side: isSelfWhite ? "white" : "black",
+                        board: game.finalBoard
                     }
                 }));
 

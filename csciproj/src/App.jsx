@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 //import internal files
@@ -14,7 +14,7 @@ import BGM from "./BGM.mp3"
 import { GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput, NavigationButton, NavigationContainer, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner, ModalInnerInner2, ModalText } from "./Style";
 
 export default function App() {
-  const { board, winner, handleChessClick } = useBoard();
+  const { board, winner, handleChessClick, handlePVPChessClick, MM, isMMDone, wsConnect } = useBoard();
   const [showSignupPage, setShowSignupPage] = useState(true);
   const [selectedMode, setSelectedMode] = useState('');
   const [friends, setFriends] = useState([]);
@@ -22,7 +22,7 @@ export default function App() {
   const [gameInfo, setGameInfo] = useState("");
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isBgmEnabled, setIsBgmEnabled] = useState(false);
-
+  const userID = useRef();
 
   const handleLogin = () => {
     // Handle login logic here
@@ -31,12 +31,11 @@ export default function App() {
       password: document.getElementsByTagName("input")[1].value.toString()
     })
     .then((res) => {
-      if (res.data.ok) {
-        console.log(res.data.msg);
-        setSelectedMode("PVP");
-        console.log(selectedMode);
-      }
-      else {
+      const payload = res.data;
+      if (payload.ok) {
+        userID.current = payload.data.userID;
+        wsConnect(userID.current);
+      } else {
         alert("no such user");
       }
     });
@@ -103,6 +102,9 @@ export default function App() {
     };
   }, [isBgmEnabled]);
 
+  useEffect(() => {
+    if (selectedMode == "PvP") MM();
+  }, [selectedMode]);
 
   useEffect(() => {
     fetchFriends();
@@ -230,7 +232,7 @@ return (
       {/* When I choose anything other than default state there is a bug. */}
       {/* //faulty signup rendering logic */}
       {selectedMode === '' && <SignupForm />}
-      {selectedMode === 'PvP' && (
+      {isMMDone && (
         <ChessContainer>
           <Checkerboard>
             {board.map((row, rowIndex) => {
@@ -243,7 +245,7 @@ return (
                           row={rowIndex}
                           col={colIndex}
                           value={board[rowIndex][colIndex]}
-                          onClick={handleChessClick}
+                          onClick={handlePVPChessClick}
                         />
                       );
                     })}
@@ -276,6 +278,10 @@ return (
           </Checkerboard>
         </ChessContainer>
       )}
+      
+      {/* {selectedMode === 'User' && ( )}
+      {selectedMode === 'Record' && ( )}
+      {selectedMode === 'Admin' && ( )} */}
 
       </CenterColumn>
 
