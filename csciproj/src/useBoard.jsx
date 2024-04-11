@@ -167,6 +167,7 @@ export default function useBoard(userID) {
 
   return {
     board,
+    setBoard,
     winner,
     handleChessClick,
     handlePVPChessClick,

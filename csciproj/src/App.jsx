@@ -14,7 +14,7 @@ import BGM from "./BGM.mp3"
 import { GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput, NavigationButton, NavigationContainer, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner, ModalInnerInner2, ModalText } from "./Style";
 
 export default function App() {
-  const { board, winner, handleChessClick, handlePVPChessClick, MM, isMMDone, wsConnect, retract } = useBoard();
+  const { board, setBoard, winner, handleChessClick, handlePVPChessClick, MM, isMMDone, wsConnect, retract } = useBoard();
   const [showSignupPage, setShowSignupPage] = useState(true);
   const [selectedMode, setSelectedMode] = useState('');
   const [friends, setFriends] = useState([]);
@@ -102,8 +102,14 @@ export default function App() {
     };
   }, [isBgmEnabled]);
 
+  const boardBackup = useRef();
   useEffect(() => {
-    if (selectedMode == "PvP") MM();
+    if (selectedMode === "PvP") {
+      boardBackup.current = board;
+      MM();
+    } else if (selectedMode === "PvC" && boardBackup.current !== undefined) {
+      setBoard(boardBackup.current);
+    }
   }, [selectedMode]);
 
   useEffect(() => {
@@ -197,13 +203,13 @@ return (
         </LoginSection>
         <GameModeSelection>
           <GameModeButton
-            onClick={() => handleModeSelection("PvC")}
+              onClick={() => { if (selectedMode !== "PvC") handleModeSelection("PvC") }}
             style={{ backgroundColor: selectedMode === "PvC" ? "green" : "" }}
           >
             Player vs Computer
           </GameModeButton>
           <GameModeButton
-            onClick={() => handleModeSelection("PvP")}
+              onClick={() => { if (selectedMode !== "PvP") handleModeSelection("PvP") }}
             style={{ backgroundColor: selectedMode === "PvP" ? "green" : "" }}
           >
             Player vs Player
