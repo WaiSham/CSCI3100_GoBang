@@ -71,6 +71,12 @@ export default function useBoard(userID) {
         case "boardNewGo":
           updateBoard(payload.data.y, payload.data.x, payload.data.side);
           break;
+        case "move":
+          if (!payload.ok && payload.reason === "notTurn") {
+            alert("Not your turn!")
+            return;
+          }
+          break;
       }
     });
 
