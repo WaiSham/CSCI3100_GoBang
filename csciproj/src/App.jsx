@@ -227,7 +227,7 @@ return (
       {/* When I choose anything other than default state there is a bug. */}
       {/* //faulty signup rendering logic */}
       {selectedMode === '' && <SignupForm />}
-      {isMMDone && (
+      {selectedMode === "PvP" && isMMDone && (
         <ChessContainer>
           <Checkerboard>
             {board.map((row, rowIndex) => {
