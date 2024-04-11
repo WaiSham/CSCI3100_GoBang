@@ -276,12 +276,12 @@ app.ws("/ws", (ws, req) => {
                 if (playerWSMap[userID].readyState === WebSocket.CLOSED) {
                     playerWSMap.delete(userID);
                 } else {
-                ws.send(JSON.stringify({
-                    ok: false,
-                    type: "auth",
-                    reason: "tooManySessions"
-                }));
-                return;
+                    ws.send(JSON.stringify({
+                        ok: false,
+                        type: "auth",
+                        reason: "tooManySessions"
+                    }));
+                    return;
                 }
             }
 
@@ -410,16 +410,6 @@ app.ws("/ws", (ws, req) => {
                     return;
                 }
 
-                const finalBoard = payload.data.finalBoard;
-                if (!finalBoard) {
-                    ws.send(JSON.stringify({
-                        ok: false,
-                        type: "move",
-                        reason: "finalBoardMissing"
-                    }));
-                    return;
-                }
-
                 Game.findById(gameID)
                     .then(async (game) => {
                         if (!game) {
@@ -451,7 +441,7 @@ app.ws("/ws", (ws, req) => {
                             })
                                 .then((move) => {
                                     game.moves.push(move._id);
-                                    game.finalBoard = finalBoard;
+                                    game.finalBoard[y * 19 + x] = isWhite ? 0 : 1;
                                     game.elapsedTime += move.timeUsed;
                                     game.save();
 
@@ -465,8 +455,9 @@ app.ws("/ws", (ws, req) => {
                                         }
                                     }));
 
-                                    playerWSMap[isBlack ? game.playerWhite.toString() : game.playerBlack.toString()]
-                                        .send(JSON.stringify({
+                                    const oppoWs = playerWSMap[isBlack ? game.playerWhite.toString() : game.playerBlack.toString()];
+                                    if (oppoWs) {
+                                        oppoWs.send(JSON.stringify({
                                             ok: true,
                                             type: "boardNewGo",
                                             data: {
@@ -475,6 +466,7 @@ app.ws("/ws", (ws, req) => {
                                                 side: isWhite ? "white" : "black"
                                             }
                                         }))
+                                    }
                                 });
                         } else {
                             ws.send(JSON.stringify({

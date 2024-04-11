@@ -16,7 +16,7 @@ const gameSchema = new mongoose.Schema({
 	moves: [{ type: mongoose.Schema.Types.ObjectId, ref: "GameMoves" }],
 	playerBlack: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
 	playerWhite: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-	finalBoard: { type: String }, // maybe record the board in HEX
+	finalBoard: { type: [Number], default: [...new Array(19 * 19).fill(-1)] }, // 0: white, 1: black
 	retractingMove: { type: Number }, // Move number
 	result: { type: String } // white, black
 });
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
 	soundEffect: { type: String },
 	friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 	games: [{ type: mongoose.Schema.Types.ObjectId, ref: "Game" }],
-	adminRight: {type: Boolean, required: true, default: false}
+	adminRight: { type: Boolean, required: true, default: false }
 });
 const User = mongoose.model('User', userSchema);
 
