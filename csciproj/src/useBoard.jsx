@@ -48,13 +48,22 @@ export default function useBoard(userID) {
         case "MM":
           if (payload.ok) {
             gameID.current = payload.data.gameID;
-            
-            //reconstruct 19 x 19 board
-            const twoDBoard = Array.from({ length: 19 }, (_, index) =>
-              payload.data.board.slice(index * 19, (index + 1) * 19)
-            );
 
-            
+            // reconstruct 19 x 19 board
+            setBoard(Array.from(
+              { length: 19 },
+              (_, index) => payload.data.board.slice(index * 19, (index + 1) * 19)
+                .map((v) => {
+                  switch (v) {
+                    case -1:
+                      return null;
+                    case 0:
+                      return "white";
+                    case 1:
+                      return "black";
+                  }
+                })
+            ));
 
             setIsMMDone(true);
           }
