@@ -14,7 +14,7 @@ import BGM from "./BGM.mp3"
 import { GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput, NavigationButton, NavigationContainer, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner, ModalInnerInner2, ModalText } from "./Style";
 
 export default function App() {
-  const { board, winner, handleChessClick, handlePVPChessClick, MM, isMMDone, wsConnect } = useBoard();
+  const { board, winner, handleChessClick, handlePVPChessClick, MM, isMMDone, wsConnect, retract } = useBoard();
   const [showSignupPage, setShowSignupPage] = useState(true);
   const [selectedMode, setSelectedMode] = useState('');
   const [friends, setFriends] = useState([]);
@@ -133,12 +133,7 @@ export default function App() {
   //for game control button
   // Function to handle retracting a move
   const handleRetractMove = () => {
-    // Logic to retract a move goes here
-    const username = "test3";
-    axios.get(("/user?username=test3"))
-    .then( (res) => {
-      console.log(res.data);
-    })
+    retract();
   };
 
   // Function to handle surrendering the game

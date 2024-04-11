@@ -71,9 +71,31 @@ export default function useBoard(userID) {
         case "boardNewGo":
           updateBoard(payload.data.y, payload.data.x, payload.data.side);
           break;
+        case "boardRemoveGo":
+          setBoard((board) => {
+            board[payload.data.y][payload.data.x] = null;
+            return board;
+          });
+          break;
         case "move":
           if (!payload.ok && payload.reason === "notTurn") {
             alert("Not your turn!")
+            return;
+          }
+          break;
+        case "retractRequest":
+          socket.send(JSON.stringify({
+            type: "retractResponse",
+            data: {
+              accept: window.confirm("Opponent request for a retract, accept?")
+            }
+          }))
+          break;
+        case "retract":
+          if (payload.ok) {
+            alert("Opponent accepted retract request.");
+          } else {
+            alert("Opponent rejected retract request.");
             return;
           }
           break;
@@ -88,6 +110,12 @@ export default function useBoard(userID) {
     ws.current.send(JSON.stringify({
       type: "MM"
     }))
+  }
+
+  function retract() {
+    ws.current.send(JSON.stringify({
+      type: "retract"
+    }));
   }
 
   const handleChessClick = useCallback(
@@ -144,6 +172,7 @@ export default function useBoard(userID) {
     handlePVPChessClick,
     MM,
     isMMDone,
-    wsConnect
+    wsConnect,
+    retract
   };
 }

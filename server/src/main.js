@@ -479,6 +479,62 @@ app.ws("/ws", (ws, req) => {
                         }
                     });
                 break;
+            case "retract": {
+                const game = await Game.findOne({
+                    $or: [
+                        { playerBlack: userID },
+                        { playerWhite: userID }
+                    ],
+                    result: null
+                });
+                playerWSMap[game.playerBlack.toString() === userID ? game.playerWhite.toString() : game.playerBlack.toString()]
+                    .send(JSON.stringify({
+                        ok: true,
+                        type: "retractRequest"
+                    }));
+            }
+                break;
+            case "retractResponse": {
+                const game = await Game.findOne({
+                    $or: [
+                        { playerBlack: userID },
+                        { playerWhite: userID }
+                    ],
+                    result: null
+                }).populate("moves");
+
+                if (!payload.data.accept) {
+                    playerWSMap[game.playerBlack.toString() === userID ? game.playerWhite.toString() : game.playerBlack.toString()]
+                        .send(JSON.stringify({
+                            ok: false,
+                            type: "retract",
+                            reason: "opponentRejected"
+                        }));
+                    return;
+                }
+
+                const lastMove = game.moves.pop();
+                game.finalBoard[lastMove.y * 19 + lastMove.x] = -1;
+                game.save();
+
+                const resData = {
+                    ok: true,
+                    type: "boardRemoveGo",
+                    data: {
+                        x: lastMove.x,
+                        y: lastMove.y
+                    }
+                };
+                ws.send(JSON.stringify(resData))
+
+                const opponent = playerWSMap[game.playerBlack.toString() === userID ? game.playerWhite.toString() : game.playerBlack.toString()];
+                opponent.send(JSON.stringify(resData));
+                opponent.send(JSON.stringify({
+                    ok: true,
+                    type: "retract"
+                }));
+            }
+                break;
             default:
                 ws.send(JSON.stringify({
                     ok: false,
