@@ -323,9 +323,16 @@ app.ws("/ws", (ws, req) => {
                 });
                 if (currentGameOfUser) {
                     ws.send(JSON.stringify({
-                        ok: false,
+                        ok: true,
                         type: "MM",
-                        reason: "alreadyInGame"
+                        reason: "alreadyInGame",
+                        data: {
+                            opponent: currentGameOfUser.playerBlack === userID
+                                ? currentGameOfUser.playerWhite.toString()
+                                : currentGameOfUser.playerBlack.toString(),
+                            gameID: currentGameOfUser.id,
+                            side: currentGameOfUser.playerBlack === userID ? "black" : "white"
+                        }
                     }))
                     return;
                 }
