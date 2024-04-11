@@ -7,6 +7,7 @@ import { Game, GameMoves, User } from "./schemas.js";
 import { StatusCodes } from "http-status-codes";
 import ExpressWs from "express-ws";
 import WebSocket from "ws";
+import { findWinner } from "./utils.js";
 
 const app = express();
 ExpressWs(app);
@@ -158,7 +159,7 @@ app.post('/logout', (req, res) => {
 app.get("/user/self", isAuthenticated, async (req, res) => {
     const userID = req.session.userID;
     let query = User.findById(userID, "-password");
-    
+
     query.populate([
         {
             path: "friends",
@@ -179,20 +180,20 @@ app.get("/user/self", isAuthenticated, async (req, res) => {
             ]
         }
     ])
-    .then( async (user) => {
-        if (user === null) res.status(StatusCodes.NOT_FOUND).json({
-            ok: false,
-            msg: "Invalid session user."
-        });
-        else res.status(StatusCodes.OK).json({
-            ok: true,
-            msg: "User Info sent.",
-            data: {
-                user
-            }
-        });
-    })
-}); 
+        .then(async (user) => {
+            if (user === null) res.status(StatusCodes.NOT_FOUND).json({
+                ok: false,
+                msg: "Invalid session user."
+            });
+            else res.status(StatusCodes.OK).json({
+                ok: true,
+                msg: "User Info sent.",
+                data: {
+                    user
+                }
+            });
+        })
+});
 
 app.get('/user', async (req, res) => {
     const username = req.query.username;
@@ -394,6 +395,13 @@ app.ws("/ws", (ws, req) => {
                     playerBlack: players[1],
                 });
 
+                players.forEach((pid) => {
+                    User.findById(pid).then((u) => {
+                        u.games.push(game._id);
+                        u.save();
+                    })
+                });
+
                 ws.send(JSON.stringify({
                     ok: true,
                     type: "MM",
@@ -411,7 +419,8 @@ app.ws("/ws", (ws, req) => {
                     data: {
                         opponent: userID,
                         gameID: game.id,
-                        side: isSelfWhite ? "black" : "white"
+                        side: isSelfWhite ? "black" : "white",
+                        board: game.finalBoard
                     }
                 }));
 
@@ -480,11 +489,11 @@ app.ws("/ws", (ws, req) => {
                                 y,
                                 timeUsed
                             })
-                                .then((move) => {
+                                .then(async (move) => {
                                     game.moves.push(move._id);
                                     game.finalBoard[y * 19 + x] = isWhite ? 0 : 1;
                                     game.elapsedTime += move.timeUsed;
-                                    game.save();
+                                    await game.save();
 
                                     ws.send(JSON.stringify({
                                         ok: true,
@@ -508,7 +517,37 @@ app.ws("/ws", (ws, req) => {
                                             }
                                         }))
                                     }
+
+                                    const winSide = findWinner(Array.from(
+                                        { length: 19 },
+                                        (_, index) => game.finalBoard.slice(index * 19, (index + 1) * 19)
+                                            .map((v) => {
+                                                switch (v) {
+                                                    case -1:
+                                                        return null;
+                                                    case 0:
+                                                        return "white";
+                                                    case 1:
+                                                        return "black";
+                                                }
+                                            })
+                                    ), y, x);
+                                    if (winSide === "draw") return;
+
+                                    game.result = winSide;
+                                    await game.save();
+
+                                    const resData = JSON.stringify({
+                                        ok: true,
+                                        type: "endGame",
+                                        data: {
+                                            side: winSide
+                                        }
+                                    });
+                                    ws.send(resData);
+                                    if (oppoWs) oppoWs.send(resData);
                                 });
+
                         } else {
                             ws.send(JSON.stringify({
                                 ok: false,

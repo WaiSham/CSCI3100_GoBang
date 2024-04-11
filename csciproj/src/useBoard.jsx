@@ -99,6 +99,9 @@ export default function useBoard(userID) {
             return;
           }
           break;
+        case "endGame":
+          setWinner(payload.data.side);
+          break;
       }
     });
 

@@ -74,19 +74,16 @@ export default function App() {
   }
 
   const handleUserPage = () => {
-    setSelectedMode(User);
-    alert(User);
+    setSelectedMode("User");
     fetchUserInfo();
   };
 
   const handleRecordPage = () => {
-    setSelectedMode(Record);
-    alert(Record);
+    setSelectedMode("Record");
   };
 
   const handleAdminPage = () => {
-    setSelectedMode(Admin);  
-    alert(Admin);
+    setSelectedMode("Admin");  
   };
 
   const userInfo = useRef();
