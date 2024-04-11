@@ -6,17 +6,22 @@ import logo from './icon.png';
 import useBoard from "./useBoard";
 import Chess from "./Chess";
 import SignupForm from "./SignupForm";
+import { UserPage } from "./User_Record_Admin";
 
 //import internal sound files
 import BGM from "./BGM.mp3"
 
 //import styled-components
-import { GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput, NavigationButton, NavigationContainer, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner, ModalInnerInner2, ModalText } from "./Style";
+import { GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput, NavigationButton, NavigationContainer, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner, ModalInnerInner2, ModalText, User, Record, Admin } from "./Style";
 
 export default function App() {
+
+let userID = undefined;
+let userInfo = undefined;
+
   const { board, winner, handleChessClick } = useBoard();
   const [showSignupPage, setShowSignupPage] = useState(true);
-  const [selectedMode, setSelectedMode] = useState('');
+  const [selectedMode, setSelectedMode] = useState('Home');
   const [friends, setFriends] = useState([]);
   const [timer, setTimer] = useState(300);//assume 5 minutes match by default
   const [gameInfo, setGameInfo] = useState("");
@@ -32,9 +37,11 @@ export default function App() {
     })
     .then((res) => {
       if (res.data.ok) {
-        console.log(res.data.msg);
+        
         setSelectedMode("PVP");
-        console.log(selectedMode);
+        userID = res.data.data.userID;
+        console.log("logged in with id", userID);
+        fetchUserInfo();
       }
       else {
         alert("no such user");
@@ -66,12 +73,53 @@ export default function App() {
     setIsGameStarted(true); // Start the game
   };
 
+  const handleHomePage = () => {
+    setSelectedMode('Home');
+    setShowSignupPage(true);
+    //alert('Home');  //testing only
+  }
+
+  const handleUserPage = () => {
+    setSelectedMode(User);
+    alert(User);
+    fetchUserInfo();
+  };
+
+  const handleRecordPage = () => {
+    setSelectedMode(Record);
+    alert(Record);
+  };
+
+  const handleAdminPage = () => {
+    setSelectedMode(Admin);  
+    alert(Admin);
+  };
+
+  const fetchUserInfo = () => {
+    if (userID !== undefined) {
+      axios.get("/user/self")
+      .then((res) => {
+        if (res.data)
+          userInfo = res.data.data.user;
+          console.log(userInfo);
+          fetchFriends();
+      });
+    }
+  };
+
+  const fetchAllUsers_admin = () => {
+    axios.get("/admin/users")
+      .then((res) => {
+        if (res.data) {
+          let userData = res.data.data.users;
+        }
+      });
+  }
+
   const fetchFriends = () => {
-    const username = "test3";
-    axios.get(("/user?username=test3"), {withCredentials : false})
-    .then( (res) => {
-      console.log(res.data);
-    })
+    if (userInfo !== undefined) {
+      setFriends(userInfo.friends);
+    }
   };
 
   // const fetchChat = () => {
@@ -131,12 +179,7 @@ export default function App() {
   //for game control button
   // Function to handle retracting a move
   const handleRetractMove = () => {
-    // Logic to retract a move goes here
-    const username = "test3";
-    axios.get(("/user?username=test3"))
-    .then( (res) => {
-      console.log(res.data);
-    })
+    fetchFriends();
   };
 
   // Function to handle surrendering the game
@@ -183,10 +226,10 @@ return (
         </WinnerModal>
       )}
       <NavigationContainer>
-        <NavigationButton>Home</NavigationButton>
-        <NavigationButton>User</NavigationButton>
-        <NavigationButton>Record</NavigationButton>
-        <NavigationButton>Admin</NavigationButton>
+        <NavigationButton onClick={handleHomePage}>Home</NavigationButton>
+        <NavigationButton onClick={handleUserPage}>User</NavigationButton>
+        <NavigationButton onClick={handleRecordPage}>Record</NavigationButton>
+        <NavigationButton onClick={handleAdminPage}>Admin</NavigationButton>
       </NavigationContainer>
       <Wrapper>
       <LeftColumn>
@@ -217,7 +260,7 @@ return (
           {friends.length > 0 ? (
             <ul>
               {friends.map((friend) => (
-                <li key={friend.id}>{friend.name}</li>
+                <li key={friend.id}>{friend.username}</li>
               ))}
             </ul>
           ) : (
@@ -229,7 +272,7 @@ return (
       <Title>Gobang</Title>
       {/* When I choose anything other than default state there is a bug. */}
       {/* //faulty signup rendering logic */}
-      {selectedMode === '' && <SignupForm />}
+      {selectedMode === 'Home' && <SignupForm />}
       {selectedMode === 'PvP' && (
         <ChessContainer>
           <Checkerboard>
@@ -276,7 +319,9 @@ return (
           </Checkerboard>
         </ChessContainer>
       )}
-
+      {selectedMode === 'User' && <UserPage userinfo={userInfo} />}
+      {selectedMode === 'Record' && <Record/>}
+      {selectedMode === 'Admin' && <Admin/>}
       </CenterColumn>
 
       <RightColumn>

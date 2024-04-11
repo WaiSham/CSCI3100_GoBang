@@ -154,6 +154,45 @@ app.post('/logout', (req, res) => {
     });
 });
 
+app.get("/user/self", isAuthenticated, async (req, res) => {
+    const userID = req.session.userID;
+    let query = User.findById(userID, "-password");
+    
+    query.populate([
+        {
+            path: "friends",
+            model: "User",
+            select: "username"
+        },
+        {
+            path: "games",
+            select: "playerBlack playerWhite elapsedTime startTime  result",
+            populate: [{
+                path: "playerBlack",
+                select: "username"
+            },
+            {
+                path: "playerWhite",
+                select: "username"
+            }
+            ]
+        }
+    ])
+    .then( async (user) => {
+        if (user === null) res.status(StatusCodes.NOT_FOUND).json({
+            ok: false,
+            msg: "Invalid session user."
+        });
+        else res.status(StatusCodes.OK).json({
+            ok: true,
+            msg: "User Info sent.",
+            data: {
+                user
+            }
+        });
+    })
+}); 
+
 app.get('/user', async (req, res) => {
     const username = req.query.username;
     const userID = req.query.userID;
