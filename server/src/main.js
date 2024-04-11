@@ -129,7 +129,10 @@ app.post('/login', (req, res) => {
 
             res.status(StatusCodes.OK).json({
                 ok: true,
-                msg: "Login succeeded."
+                msg: "Login succeeded.",
+                data: {
+                    userID: user.id
+                }
             });
         })
         .catch(() => {
