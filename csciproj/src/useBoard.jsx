@@ -9,7 +9,6 @@ export default function useBoard(userID) {
   const [board, setBoard] = useState(Array(SIZE).fill(Array(SIZE).fill(null)));
   const [winner, setWinner] = useState(null);
 
-  const isBlackMoving = useRef(true);
   const lastRow = useRef();
   const lastCol = useRef();
 
@@ -126,8 +125,13 @@ export default function useBoard(userID) {
       if (value) return;
       lastRow.current = row;
       lastCol.current = col;
-      updateBoard(row, col, isBlackMoving.current ? "black" : "white");
-      isBlackMoving.current = !isBlackMoving.current;
+      updateBoard(row, col, "black");
+      let x, y;
+      do {
+        x = Math.round(Math.random() * 18);
+        y = Math.round(Math.random() * 18);
+      } while (board[y][x] !== null);
+      updateBoard(y, x, "white");
     },
     [updateBoard]
   );
