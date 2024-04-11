@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 import { SignForm, SignupTitle, SignupInput, SignupButton } from "./Style";
 
 export default function SignupForm() {
@@ -27,28 +27,14 @@ export default function SignupForm() {
 
   const registerUser = (username, password) => {
     // Make API call to register the user
-    fetch('/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
+    axios.post("/register", {
+      username, password
     })
-      .then((response) => {
-        if (response.ok) {
-          // User successfully registered
-          console.log('User registered successfully');
-          // Reset form fields
-          setUsername('');
-          setPassword('');
-        } else {
-          // Error occurred during registration
-          console.log('Error registering user');
-        }
-      })
-      .catch((error) => {
-        console.log('Error occurred during registration:', error);
-      });
+    .then((res) => {
+      if (res.data.ok) {
+        console.log(res.data.msg);
+      }
+    });
   };
 
   return (

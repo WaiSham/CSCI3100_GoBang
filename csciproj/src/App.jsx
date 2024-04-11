@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 //import internal files
 import logo from './icon.png';
@@ -10,7 +11,7 @@ import SignupForm from "./SignupForm";
 import BGM from "./BGM.mp3"
 
 //import styled-components
-import {GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput , UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner,ModalInnerInner2, ModalText, NavigationContainer, NavigationButton} from "./Style";
+import { GlobalStyles, Title, LeftColumn, Logo, LoginSection, SignForm, SignupButton, SignupTitle, SignupInput, NavigationButton, NavigationContainer, UsernameInput, PasswordInput, LoginButton, GameModeSelection, GameModeButton, FriendsList, Wrapper, CenterColumn, ChessContainer, Checkerboard, Row, WinnerModal, ModalInner, RightColumn, Timer, GameInfo, GameControl, GameControlButton, ChatBox, ChatMessages, ChatInput, ChatButton, ModalButton, ModalInnerInner, ModalInnerInner2, ModalText } from "./Style";
 
 export default function App() {
   const { board, winner, handleChessClick } = useBoard();
@@ -25,12 +26,38 @@ export default function App() {
 
   const handleLogin = () => {
     // Handle login logic here
-    alert("no five write yet")
+    axios.post("/login", {
+      username: document.getElementsByTagName("input")[0].value.toString(),
+      password: document.getElementsByTagName("input")[1].value.toString()
+    })
+    .then((res) => {
+      if (res.data.ok) {
+        console.log(res.data.msg);
+        setSelectedMode("PVP");
+        console.log(selectedMode);
+      }
+      else {
+        alert("no such user");
+      }
+    });
   };
 
   const handleSignup = () => {
     // Handle sign up logic here
-    alert("no six write yet")
+    axios.post("/register", {
+      username: document.getElementsByTagName("input")[2].value.toString(),
+      password: document.getElementsByTagName("input")[3].value.toString()
+    }).then((res) => {
+      if (res.data.ok) {
+        console.log(res.data.msg);
+        setSelectedMode("PVP");
+        console.log(selectedMode);
+        handleLogin();
+      }
+      else {
+        alert("user not created");
+      }
+    });
   };
 
   const handleModeSelection = (mode) => {
@@ -40,16 +67,20 @@ export default function App() {
   };
 
   const fetchFriends = () => {
-    setTimeout(() => {
-      const friendsData = [
-        { id: 1, name: "John" },
-        { id: 2, name: "Jane" },
-        { id: 3, name: "Alice" },
-        { id: 4, name: "Bob" },
-      ];
-      setFriends(friendsData);
-    }, 1000);
+    const username = "test3";
+    axios.get(("/user?username=test3"), {withCredentials : false})
+    .then( (res) => {
+      console.log(res.data);
+    })
   };
+
+  // const fetchChat = () => {
+  //   const username = "test3";
+  //   axios.get(("")+)
+  //   .then((res) => {
+  //     con
+  //   })
+  // };
 
   const toggleBgm = () => {
     setIsBgmEnabled((prevIsBgmEnabled) => !prevIsBgmEnabled);
@@ -78,13 +109,13 @@ export default function App() {
   }, []);
 
   // for time (Downcounting)
-  useEffect(() => { 
+  useEffect(() => {
     const interval = setInterval(() => {
       if (isGameStarted) {
         setTimer((prevTimer) => prevTimer - 1);
       }
     }, 1000);
-  
+
     return () => clearInterval(interval);
   }, [isGameStarted]);
 
@@ -93,7 +124,7 @@ export default function App() {
   //   const interval = setInterval(() => {
   //     setTimer((prevTimer) => prevTimer + 1);
   //   }, 1000);
-  
+
   //   return () => clearInterval(interval); // Clean up the interval when the component unmounts
   // }, []);
 
@@ -101,7 +132,11 @@ export default function App() {
   // Function to handle retracting a move
   const handleRetractMove = () => {
     // Logic to retract a move goes here
-    alert("no one write yet!!!")
+    const username = "test3";
+    axios.get(("/user?username=test3"))
+    .then( (res) => {
+      console.log(res.data);
+    })
   };
 
   // Function to handle surrendering the game
@@ -125,7 +160,7 @@ export default function App() {
   //   // something to use here get data every sometimes
   // }
 
-  return (
+return (
     <div>
       <GlobalStyles />        
       {/* <Title>Gobang</Title> */}
@@ -279,5 +314,3 @@ export default function App() {
     </div>
   );
 }
-
-//----------------------------------------------------------
