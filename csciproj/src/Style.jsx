@@ -185,6 +185,18 @@ export const Row = styled.div`
   display: flex;
 `;
 
+//User Page (Center Column)
+export const User = styled.div`
+
+`;
+//Record Page (Center Column)
+export const Record = styled.div`
+
+`;
+//Admin Page (Center Column)
+export const Admin = styled.div`
+
+`;
 //For the pop up banner and such
 export const WinnerModal = styled.div`
   position: fixed;
